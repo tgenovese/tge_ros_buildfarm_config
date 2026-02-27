@@ -1,20 +1,21 @@
 %YAML 1.1
-# ROS buildfarm index file
+# ROS buildfarm release-build file
 ---
-distributions:
-  jazzy:
-    release_builds:
-      default: jazzy/release-debian-amd64-build.yaml
-      dbv8: jazzy/release-debian-arm64-build.yaml
-  rolling:
-    release_builds:
-      default: rolling/release-debian-amd64-build.yaml
-      dtv8: rolling/release-debian-arm64-build.yaml
-jenkins_url: https://jenkins.example.com
-prerequisites:
-  debian_repositories:
-  - http://repo.ros2.org/ubuntu/main
-  debian_repository_keys:
+abi_incompatibility_assumed: true
+
+package_blacklist:
+- mapviz  # Known issues with building on ARM processors. https://github.com/swri-robotics/mapviz/issues/777
+
+package_ignore_list:
+- gurumdds_cmake_module  # No Debian package for GurumDDS
+- rmw_gurumdds_cpp  # No Debian package for GurumDDS
+
+package_dependency_behavior:
+  include_test_dependencies: false
+  run_package_tests: false
+
+repositories:
+  keys:
   - |
     -----BEGIN PGP PUBLIC KEY BLOCK-----
     Version: GnuPG v1
@@ -58,6 +59,13 @@ prerequisites:
     CEXRgHY3Utq/I3CLJ+KcJCUCH5D16Z7aOoazG9DKbewA+da8Drw=
     =9IZg
     -----END PGP PUBLIC KEY BLOCK-----
-rosdistro_index_url: https://raw.githubusercontent.com/tgenovese/tge_rosdistro/main/index-v4.yaml
-type: buildfarm
-version: 1
+  urls:
+  - http://repo.ros2.org/ubuntu/main
+target_repository: http://repo.example.com/ubuntu/building
+targets:
+  debian:
+    trixie:
+      arm64:
+type: release-build
+upload_credential_id: null
+version: 2
