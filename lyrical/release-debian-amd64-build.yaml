@@ -3,12 +3,19 @@
 ---
 abi_incompatibility_assumed: true
 
-package_ignore_list:
-- gurumdds_cmake_module  # No Debian package for GurumDDS
-- rmw_connextdds  # Depends on rmw_connextdds_common
-- rmw_connextdds_common  # Depends on rti_connext_dds_cmake_module
-- rmw_gurumdds_cpp  # No Debian package for GurumDDS
-- rti_connext_dds_cmake_module  # Is rti-connext-dds-X.Y.Z available on Trixie?
+package_blacklist:
+- kortex_api  # Kinova does not provide arm64, only armv7. https://github.com/PickNikRobotics/ros2_kortex/issues/158
+- kortex_bringup  # depends on kortex_api and kortex_driver
+- kortex_driver  # depends on kortex_api and uses libKortexApiCpp.a from Kinova
+- mapviz  # Known issues with building on ARM processors. https://github.com/swri-robotics/mapviz/issues/777
+- open3d_vendor  # pre-compiled Open3D binaries not available for arm64
+
+# package_ignore_list:
+# - gurumdds_cmake_module  # No Debian package for GurumDDS
+# - rmw_connextdds  # Depends on rmw_connextdds_common
+# - rmw_connextdds_common  # Depends on rti_connext_dds_cmake_module
+# - rmw_gurumdds_cpp  # No Debian package for GurumDDS
+# - rti_connext_dds_cmake_module  # Is rti-connext-dds-X.Y.Z available on Trixie?
 
 package_dependency_behavior:
   include_test_dependencies: false
